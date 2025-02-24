@@ -1,3 +1,8 @@
+(defun partial (func &rest args1)
+  (lambda (&rest args2)
+    (apply func (append args1 args2))))
+
+
 (defun fact (n &optional (acc 1))
     (if (<= n 1) acc
         (fact (- n 1) (* acc n))))
@@ -6,31 +11,23 @@
 (defun fib (n)
     (if (< n 0) 0
         (if (= n 1) 1
-            (+ (fib (- n 1)) (fib (- n 2))))
-     )
-)
+            (+ (fib (- n 1)) (fib (- n 2))))))
 
 
-(def fib_acc ( ))
-
-; (fib n 0) == (fib (n-1) 0) + (fib (n-2) 0)
-; indices
-; n -> 0
-; (n - 1) -> 1
-; (n - 2) -> 2 ...
-
-; (trace fib)
-; (princ (mapcar #'fib '(1 2 3 4 5 6 7 8 9 10 11)))
-; (princ (mapcar #'fact '(1 2 3 4 5 6 7 8 9 10 11)))
+; F(n) = F(n-1) + F(n-2)
+; F(n-1) = F(n-2) + F(n-3)
+; ... F(2) = F(0) + F(1), 
+; F(1) = 1, F(0) = 0
+(defun fib_tail (prev curr n)
+    (if (= n 0) curr
+        (fib_tail curr (+ prev curr) (- n 1))))
 
 
+(defun fib_p (n)
+    (fib_tail 0 1 n))
 
-; (princ (fib 0 0)) ; => 0
-; (princ (fib 1 0)) ; => 1
-; (princ (fib 2 0)) ; => 1
-; (princ (fib 3 0)) ; => 2
-; (princ (fib 4 0)) ; => 3
-; (princ (fib 5 0)) ; => 5
-; (princ (fib 6 0)) ; => 8
 
+; (trace fib_tail)
+; (fib_p 10)
+; (princ (mapcar #'fib_p '(1 2 3 4 5 6 7 8 9 10 11 12)))
 
